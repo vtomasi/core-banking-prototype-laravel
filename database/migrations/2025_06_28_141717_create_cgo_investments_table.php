@@ -21,7 +21,17 @@ return new class () extends Migration {
             $table->decimal('shares_purchased', 15, 4);
             $table->decimal('ownership_percentage', 8, 6); // e.g., 0.001234 = 0.1234%
             $table->enum('tier', ['bronze', 'silver', 'gold']);
-            $table->enum('status', ['pending', 'confirmed', 'cancelled', 'refunded'])->default('pending');
+            //$table->enum('status', ['pending', 'confirmed', 'cancelled', 'refunded'])->default('pending');
+            $table->enum('status', [
+    'pending',
+    'confirmed',
+    'cancelled',
+    'refunded',
+    'kyc_required',
+    'aml_review',
+    'payment_failed',
+    'expired',
+])->default('pending');
             $table->string('payment_method'); // crypto, bank_transfer, card
             $table->string('crypto_address')->nullable();
             $table->string('crypto_tx_hash')->nullable();
@@ -42,6 +52,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('cgo_investments');
+       Schema::dropIfExists('cgo_investments');
     }
 };

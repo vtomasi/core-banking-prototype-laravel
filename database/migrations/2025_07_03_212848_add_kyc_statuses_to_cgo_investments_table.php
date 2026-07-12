@@ -18,17 +18,9 @@ return new class () extends Migration {
         if ($driver === 'mysql' || $driver === 'mariadb') {
             DB::statement("ALTER TABLE cgo_investments MODIFY COLUMN status ENUM('pending', 'confirmed', 'cancelled', 'refunded', 'kyc_required', 'aml_review', 'payment_failed', 'expired') DEFAULT 'pending'");
         } elseif ($driver === 'pgsql') {
-            // First, remove the default constraint
-            DB::statement('ALTER TABLE cgo_investments ALTER COLUMN status DROP DEFAULT');
-
-            // Add new values to the enum type
-            DB::statement("ALTER TYPE cgo_investments_status_enum ADD VALUE IF NOT EXISTS 'kyc_required'");
-            DB::statement("ALTER TYPE cgo_investments_status_enum ADD VALUE IF NOT EXISTS 'aml_review'");
-            DB::statement("ALTER TYPE cgo_investments_status_enum ADD VALUE IF NOT EXISTS 'payment_failed'");
-            DB::statement("ALTER TYPE cgo_investments_status_enum ADD VALUE IF NOT EXISTS 'expired'");
-
-            // Re-add the default
-            DB::statement("ALTER TABLE cgo_investments ALTER COLUMN status SET DEFAULT 'pending'");
+    		// Fresh PostgreSQL installation:
+    		// the status values are already present in the create migration.
+    			return;
         } else {
             // For SQLite and other databases, we need to recreate the table
             // This is acceptable for testing but should be avoided in production

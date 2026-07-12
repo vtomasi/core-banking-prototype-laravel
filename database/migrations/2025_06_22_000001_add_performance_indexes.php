@@ -54,16 +54,37 @@ return new class () extends Migration {
      * Check if an index exists on a table.
      */
     private function indexExists(string $table, string $index): bool
-    {
-        // Skip check for SQLite as it's primarily used for testing
-        if (DB::getDriverName() === 'sqlite') {
-            return false;
-        }
+{
+    $driver = DB::getDriverName();
 
-        $indexes = DB::select("SHOW INDEX FROM {$table} WHERE Key_name = ?", [$index]);
+    if ($driver === 'sqlite') {
+        return false;
+    }
+
+    if ($driver === 'mysql') {
+        $indexes = DB::select(
+            "SHOW INDEX FROM {$table} WHERE Key_name = ?",
+            [$index]
+        );
 
         return count($indexes) > 0;
     }
+
+    if ($driver === 'pgsql') {
+        $result = DB::select(
+            "SELECT 1
+             FROM pg_indexes
+             WHERE schemaname = current_schema()
+               AND tablename = ?
+               AND indexname = ?",
+            [$table, $index]
+        );
+
+        return count($result) > 0;
+    }
+
+    return false;
+}
 
     /**
      * Reverse the migrations.

@@ -20,7 +20,7 @@ return new class () extends Migration {
             DB::statement('ALTER TABLE users ALTER COLUMN kyc_level DROP DEFAULT');
 
             // Add new value to the enum type
-            DB::statement("ALTER TYPE users_kyc_level_enum ADD VALUE IF NOT EXISTS 'none'");
+           
 
             // Make column nullable
             DB::statement('ALTER TABLE users ALTER COLUMN kyc_level DROP NOT NULL');

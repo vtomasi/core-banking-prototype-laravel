@@ -13,7 +13,13 @@ return new class () extends Migration {
         Schema::create('assets', function (Blueprint $table) {
             $table->string('code', 10)->primary();
             $table->string('name', 100);
-            $table->enum('type', ['fiat', 'crypto', 'commodity', 'custom']);
+            $table->enum('type', [
+    'fiat',
+    'crypto',
+    'commodity',
+    'custom',
+    'basket',
+]);
             $table->unsignedTinyInteger('precision')->default(2);
             $table->boolean('is_active')->default(true);
             $table->json('metadata')->nullable();
@@ -41,7 +47,7 @@ return new class () extends Migration {
                 'type'       => 'fiat',
                 'precision'  => 2,
                 'is_active'  => true,
-                'metadata'   => json_encode(['symbol' => '€', 'iso_code' => 'EUR']),
+                'metadata'   => json_encode(['symbol' => 'â‚¬', 'iso_code' => 'EUR']),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -51,7 +57,7 @@ return new class () extends Migration {
                 'type'       => 'fiat',
                 'precision'  => 2,
                 'is_active'  => true,
-                'metadata'   => json_encode(['symbol' => '£', 'iso_code' => 'GBP']),
+                'metadata'   => json_encode(['symbol' => 'Â£', 'iso_code' => 'GBP']),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -61,7 +67,7 @@ return new class () extends Migration {
                 'type'       => 'crypto',
                 'precision'  => 8,
                 'is_active'  => true,
-                'metadata'   => json_encode(['symbol' => '₿', 'network' => 'bitcoin']),
+                'metadata'   => json_encode(['symbol' => 'â‚¿', 'network' => 'bitcoin']),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -71,7 +77,7 @@ return new class () extends Migration {
                 'type'       => 'crypto',
                 'precision'  => 18,
                 'is_active'  => true,
-                'metadata'   => json_encode(['symbol' => 'Ξ', 'network' => 'ethereum']),
+                'metadata'   => json_encode(['symbol' => 'Îž', 'network' => 'ethereum']),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
